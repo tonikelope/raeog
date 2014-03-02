@@ -51,6 +51,7 @@ define('GOEAR_LOGIN_POST_REFERER', 'http://www.goear.com/lightbox/login');
 define('LOG_TEMP_FILE', '.raeog'.uniqid().'_do_not_remove');
 define('ANTIFLOOD', FALSE);
 define('CURL_USERAGENT', 'Mozilla/5.0 (X11; Linux x86_64; rv:27.0) Gecko/20100101 Firefox/27.0');
+define('CURL_BUFFER_SIZE', 1024);
 
 echo "\n*****goear BACKUP DOWNLOADER (".SCRIPT_VERSION.")*****\n\n";
 
@@ -338,7 +339,7 @@ function download_song($fc, $song, $download_dir, $lf=NULL)
             if(!file_exists(($fpath=rtrim($download_dir, '/').'/'.ltrim($fname, '/'))))
             {
                     $fc->noprogress=FALSE;
-                    $fc->buffersize=1024;
+                    $fc->buffersize=CURL_BUFFER_SIZE;
                     $down_progress=-1;
 
                     if(file_put_contents($fpath, $fc->exec())===FALSE)
