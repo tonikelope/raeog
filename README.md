@@ -1,7 +1,7 @@
 raeog
 =====
 
-Raeog (goear BACKUP DOWNLOADER)
+Raeog (Goear backup downloader)
 
 Use: ./raeog.php { {-u=nick -p=password [-f] [-j] [-l]} | {-l=PLAYLIST_URL} | {-s=SONG_URL} } [--proxy=IP:PORT]
 	
