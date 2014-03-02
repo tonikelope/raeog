@@ -328,7 +328,7 @@ function download_song($fc, $song, $download_dir, $lf=NULL)
         $fc->referer=null;
 
         if(($xml = simplexml_load_string($fc->fetch()))!==false) {
-            $metadata['title']=$xml->playlist->track['title'];
+            $metadata['title']=html_entity_decode($xml->playlist->track['title']);
         
             $fc->url=str_replace('\1', $song, GOEAR_TRACKER);
             $fc->referer=GOEAR_SONG_PLAYER;
