@@ -110,22 +110,19 @@ if(($opt=getopt('u::p::s::l::j::', array('proxy::'))))
 	            
 		    $fc->add_header(array('X-Requested-With' => 'XMLHttpRequest'));
                     $fc->enable_post(str_replace(array('\1', '\2'), array($user, $pass), GOEAR_LOGIN_POST_DATA), NULL, GOEAR_LOGIN_POST_URL, GOEAR_LOGIN_POST_REFERER);
-		
+	            $fc->exec();
+                    $fc->delete_header('X-Requested-With');
+		    $fc->url=GOEAR_HOME;
+                    $fc->referer=null;
+		    $login=$fc->fetch('/goear\.com\/'.preg_quote($user, '/').'/i');
 		}
 		else
-                    $login=TRUE;
+                    $login=true;
                 
-                $fc->exec();
-                
-                $fc->url=GOEAR_HOME;
-                $fc->referer=null;
-		
-		if($login || $fc->fetch('/goear\.com\/'.preg_quote($user, '/').'/i'))
+		if($login)
 		{
 			echo "OK\n";
-			
-                        $fc->delete_header('X-Requested-With');
-                        
+
 			$lf=fopen(LOG_TEMP_FILE, 'a+');
 			
 			if(isset($opt['f']) || (!isset($opt['l']) && !isset($opt['j'])))
