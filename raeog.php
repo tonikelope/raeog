@@ -103,12 +103,15 @@ if(($opt=getopt('u::p::s::l::j::', array('proxy::'))))
 	if(($user=$opt['u']) && ($pass=$opt['p']))
 	{
 		$fc->url=GOEAR_HOME;
-                $fc->add_header(array('X-Requested-With' => 'XMLHttpRequest'));
 			
 		echo "\nLOGIN goear ($user)... ";
 		
-		if(!$fc->fetch('/goear\.com\/'.preg_quote($user, '/').'/i'))
+		if(!$fc->fetch('/goear\.com\/'.preg_quote($user, '/').'/i')) {
+	            
+		    $fc->add_header(array('X-Requested-With' => 'XMLHttpRequest'));
                     $fc->enable_post(str_replace(array('\1', '\2'), array($user, $pass), GOEAR_LOGIN_POST_DATA), NULL, GOEAR_LOGIN_POST_URL, GOEAR_LOGIN_POST_REFERER);
+		
+		}
 		else
                     $login=TRUE;
                 
