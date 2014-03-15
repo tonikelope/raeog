@@ -70,13 +70,13 @@ if(($opt=getopt('u::p::s::l::j::', array('proxy::'))))
             }
             else if($ds>0)
             {
-                    if($fc->buffersize < round($ds/150))
-                            $fc->buffersize=round($ds/150);
+		if($fc->buffersize < round($ds/150)) {
+			$fc->buffersize=round($ds/150);
+		}
 
-                    if(($p=round(($d/$ds)*100))>$down_progress)
-                    {
-                            console_progress_bar(($down_progress=$p));
-                    }
+		if(($p=round(($d/$ds)*100))>$down_progress) {
+			console_progress_bar(($down_progress=$p));
+		}
             }
 	};
 	
