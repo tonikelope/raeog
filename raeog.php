@@ -29,7 +29,7 @@ ini_set('open_basedir', FALSE);
 
 require_once('lib/FastCurl/FastCurl.php');
 
-define('SCRIPT_VERSION', '3.4');
+define('SCRIPT_VERSION', '3.5');
 define('GOEAR_HOME', 'http://www.goear.com');
 define('COOKIE_FILE', '.fastcurl_cookies');
 define('GOEAR_SONG_METADATA', 'http://www.goear.com/playersong/\1');
@@ -43,6 +43,7 @@ define('GOEAR_FAVORITES_PLAYLIST_REGEX', '/"favplaylist\_(.*?)".*?\1\/(.*?)"/is'
 define('GOEAR_AUDIOS', 'http://www.goear.com/\1/sounds');
 define('GOEAR_AUDIOS_SONG_REGEX', '/"sound\_(?P<id_song>.*?)"/i');
 define('GOEAR_PLAYLIST', 'http://www.goear.com/\1/playlist/\2');
+define('GOEAR_PLAYLIST_URL', 'http://www.goear.com/playlist/\1');
 define('GOEAR_PLAYLIST_XML', 'http://www.goear.com/playerplaylist/\1');
 define('GOEAR_PLAYLIST_REGEX', '/goear\.com\/playlist\/(.*?)\/([^\/"\']+)/i');
 define('GOEAR_LOGIN_POST_DATA', 'back=http%3A%2F%2Fwww.goear.com%2F&user_name=\1&password=\2');
@@ -371,6 +372,10 @@ function download_playlist($fc, $id, $name, $lf=NULL)
 		else
 			die("ERROR\n");
 	}
+
+	$fc->url=str_replace('\1', $id, GOEAR_PLAYLIST_URL);
+	$fc->referer=null;
+	$fc->exec();
 	
 	echo "Reading playlist <$id> metadata... ";
 	
