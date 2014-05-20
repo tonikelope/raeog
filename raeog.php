@@ -29,7 +29,7 @@ ini_set('open_basedir', FALSE);
 
 require_once('lib/FastCurl/FastCurl.php');
 
-define('SCRIPT_VERSION', '3.5');
+define('SCRIPT_VERSION', '3.6');
 define('GOEAR_HOME', 'http://www.goear.com');
 define('COOKIE_FILE', '.fastcurl_cookies');
 define('GOEAR_SONG_METADATA', 'http://www.goear.com/playersong/\1');
@@ -320,6 +320,10 @@ $ ./raeog.php -u=bob -p=password -f -j -l
 function download_song($fc, $song, $download_dir, $lf=NULL)
 {
 	global $down_progress;
+
+	$fc->url=GOEAR_HOME;
+	$fc->referer=null;
+	$fc->exec();
 	
         echo "\nReading song <$song> metadata... ";
 
