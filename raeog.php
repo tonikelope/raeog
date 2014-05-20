@@ -62,7 +62,7 @@ if(($opt=getopt('u::p::s::l::j::', array('proxy::'))))
 	$fc->cookiefile=($fc->cookiejar=COOKIE_FILE);
 	$fc->useragent=CURL_USERAGENT;
 	
-	$fc->progressfunction=function($ch, $ds, $d, $us, $u) use (&$down_progress, $fc)
+	$fc->progressfunction=function($ch, $ds, $d, $us) use (&$down_progress, $fc)
 	{ 
             if($down_progress<0)
             {
@@ -124,7 +124,7 @@ if(($opt=getopt('u::p::s::l::j::', array('proxy::'))))
 		{
 			echo "OK\n";
 
-			$lf=fopen(LOG_TEMP_FILE, 'a+');
+			//$lf=fopen(LOG_TEMP_FILE, 'a+');
 			
 			if(isset($opt['f']) || (!isset($opt['l']) && !isset($opt['j'])))
 			{
@@ -269,11 +269,11 @@ if(($opt=getopt('u::p::s::l::j::', array('proxy::'))))
 	}
 	else if(isset($opt['l']) && preg_match(GOEAR_PLAYLIST_REGEX, $opt['l'], $playlist))
 	{
-		$lf=fopen(LOG_TEMP_FILE, 'a+');
+		//$lf=fopen(LOG_TEMP_FILE, 'a+');
 				
 		download_playlist($fc, $playlist[1], $playlist[2], $lf);
 		
-		unlink(LOG_TEMP_FILE);
+		//unlink(LOG_TEMP_FILE);
                 
                 echo "\n\nPlaylist BACKUP FINISHED :)\n\n";
 	}
@@ -335,7 +335,18 @@ function download_song($fc, $song, $download_dir, $lf=NULL)
             $fc->url=str_replace('\1', $song, GOEAR_TRACKER);
             $fc->referer=GOEAR_SONG_PLAYER;
 
-            echo "OK\n\nDownloading [".($fname=strtr($metadata['title'], array(' ' => '_' , "'" => "" , '.' => ' ', "\\" => "")).'.mp3')."]...\n";
+             echo "OK\n\nDownloading [".($fname=strtr($metadata['title'], array(
+																				"'" => "",
+																				'.' => ' ',
+																			   "\\" => "",
+																				"?" => "",
+																				"/" => "",
+																				">" => "",
+																				"<" => "",
+																				":" => "",
+																				"|" => "",
+																				"*" => "",
+																				'"' => '')).'.mp3')."]...\n";
 
             if(!file_exists(($fpath=rtrim($download_dir, '/').'/'.ltrim($fname, '/'))))
             {
