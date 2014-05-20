@@ -1,24 +1,9 @@
-raeog
+Raeog con pequeñas modificaciones para Windows XP con PHP-5.4.28.0
 =====
+Para usarlo necesitas poner [PHP](http://windows.php.net/downloads/releases/php-5.4.28-nts-Win32-VC9-x86.zip) por ejemplo en C:\PHP (dentro el ejecutable php.exe) y variable [path](https://www.java.com/es/download/help/path.xml) incluyendo C:\PHP;
 
-Raeog (Goear backup downloader)
+* Raeog.bat para facilitar aun más el uso del programa
+* No crea archivos temporales (me evita el problema de no poder borrarlos por permisos)
+* Evito el uso de la barra de progreso por errores
 
-Use: ./raeog.php { {-u=nick -p=password [-f] [-j] [-l]} | {-l=PLAYLIST_URL} | {-s=SONG_URL} } [--proxy=IP:PORT]
-	
-Download ONE song:
-$ ./raeog.php -s=http://www.goear.com/listen/1234567/bla
-
-Download ONE playlist:
-$ ./raeog.php -l=http://www.goear.com/playlist/7654321/alb
-
-Download ALL user favorites songs:
-$ ./raeog.php -u=alice -p=password
-
-Download ALL uploaded songs by user:
-$ ./raeog.php -u=bob -p=password -j
-
-Download ALL user playlists:
-$ ./raeog.php -u=alice -p=password -l
-
-Download EVERYTHING:
-$ ./raeog.php -u=bob -p=password -f -j -l
+------
