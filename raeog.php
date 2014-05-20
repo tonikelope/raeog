@@ -335,8 +335,7 @@ function download_song($fc, $song, $download_dir, $lf=NULL)
             $fc->url=str_replace('\1', $song, GOEAR_TRACKER);
             $fc->referer=GOEAR_SONG_PLAYER;
 
-            echo "OK\n\nDownloading [".($fname=strtr($metadata['title'], array(' ' => '_')).'.mp3')."]...\n";
-
+            echo "OK\n\nDownloading [".($fname=strtr($metadata['title'], array(' ' => '_' , "'" => "" , '.' => ' ', "\\" => "")).'.mp3')."]...\n";
             if(!file_exists(($fpath=rtrim($download_dir, '/').'/'.ltrim($fname, '/'))))
             {
                     $fc->noprogress=FALSE;
