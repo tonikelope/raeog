@@ -319,7 +319,11 @@ $ ./raeog.php -u=bob -p=password -f -j -l
 
 function download_song($fc, $song, $download_dir, $lf=NULL)
 {
-	global $down_progress;
+		global $down_progress;
+		
+		$fc->url=GOEAR_HOME;
+		$fc->referer=null;
+		$fc->exec();
 	
         echo "\nReading song <$song> metadata... ";
 
