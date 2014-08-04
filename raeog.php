@@ -62,7 +62,7 @@ if(($opt=getopt('u::p::s::l::j::', array('proxy::'))))
 	$fc->cookiefile=($fc->cookiejar=COOKIE_FILE);
 	$fc->useragent=CURL_USERAGENT;
 	
-	$fc->progressfunction=function($ch, $ds, $d, $us) use (&$down_progress, $fc)
+	$fc->progressfunction=function($ch, $ds, $d, $us, $u) use (&$down_progress, $fc)
 	{ 
             if($down_progress<0)
             {
