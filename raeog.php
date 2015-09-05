@@ -29,7 +29,7 @@ ini_set('open_basedir', FALSE);
 
 require_once('lib/FastCurl/FastCurl.php');
 
-define('SCRIPT_VERSION', '3.6');
+define('SCRIPT_VERSION', '3.7');
 define('GOEAR_HOME', 'http://www.goear.com');
 define('COOKIE_FILE', '.fastcurl_cookies');
 define('GOEAR_SONG_METADATA', 'http://www.goear.com/playersong/\1');
@@ -317,7 +317,7 @@ $ ./raeog.php -u=bob -p=password -f -j -l
 }
 	
 
-function download_song($fc, $song, $download_dir, $lf=NULL)
+function download_song($fc, $song, $download_dir, $lf=null, $count=null)
 {
 	global $down_progress;
 
@@ -351,6 +351,11 @@ function download_song($fc, $song, $download_dir, $lf=NULL)
 										"|" => "",
 										"*" => "",
 										'"' => '')).'.mp3')."]...\n";
+										
+			if(!is_null($count))
+			{
+				$fname = "{$count}_{$fname}";
+			}
 																				
             if(!file_exists(($fpath=rtrim($download_dir, '/').'/'.ltrim($fname, '/'))))
             {
@@ -406,13 +411,13 @@ function download_playlist($fc, $id, $name, $lf=NULL)
 		
 		foreach($xml->playlist->track as $song)
 		{
-			echo "\n(".$i++."/$tot_songs) ";
+			echo "\n(".$i."/$tot_songs) ";
                         
-                        preg_match(GOEAR_SONG_REGEX, $song['target'], $song);
+            preg_match(GOEAR_SONG_REGEX, $song['target'], $song);
                         
 			if(!isset($temp_log) || !array_key_exists((string)$song[1], $temp_log) || !file_exists($temp_log[(string)$song[1]]))
 			{
-				download_song($fc, $song[1], $playlist_dir, $lf);				
+				download_song($fc, $song[1], $playlist_dir, $lf, $i);				
 				
 				if(is_numeric(ANTIFLOOD) && ANTIFLOOD>0 && $i<=$tot_songs)
 				{
@@ -422,6 +427,8 @@ function download_playlist($fc, $id, $name, $lf=NULL)
 			}
 			else
 				echo "FILE [{$temp_log[(string)$song[1]]}] EXISTS! -> Song <{$song[1]}> SKIPPED\n";
+				
+			$i++;
 		}
 	}
 	else
