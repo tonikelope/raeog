@@ -29,7 +29,7 @@ ini_set('open_basedir', FALSE);
 
 require_once('lib/FastCurl/FastCurl.php');
 
-define('SCRIPT_VERSION', '3.7');
+define('SCRIPT_VERSION', '3.8');
 define('GOEAR_HOME', 'http://www.goear.com');
 define('COOKIE_FILE', '.fastcurl_cookies');
 define('GOEAR_SONG_METADATA', 'http://www.goear.com/playersong/\1');
@@ -334,24 +334,15 @@ function download_song($fc, $song, $download_dir, $lf=null, $count=null)
         $fc->referer=null;
 
         if(($xml = simplexml_load_string($fc->fetch()))!==false) {
-            $metadata['title']=str_replace('/', '', html_entity_decode($xml->playlist->track['title']));
-        
+            
             $fc->url=str_replace('\1', $song, GOEAR_TRACKER);
+            
             $fc->referer=GOEAR_SONG_PLAYER;
 
-            echo "OK\n\nDownloading [".($fname=strtr($metadata['title'], array(
-										"'" => "",
-									  	'.' => ' ',
-									       "\\" => "",
-										"?" => "",
-										"/" => "",
-									 	">" => "",
-									  	"<" => "",
-								 		":" => "",
-										"|" => "",
-										"*" => "",
-										'"' => '')).'.mp3')."]...\n";
+			$fname=str_replace('/', '', html_entity_decode_rec($xml->playlist->track['title']));
 										
+			echo "OK\n\nDownloading [{$fname}.mp3]...\n";
+							
 			if(!is_null($count))
 			{
 				$fname = "{$count}_{$fname}";
@@ -445,6 +436,16 @@ function console_progress_bar($pos=0, $size=100, $bar_width=50)
 	}
 	
 	printf("%s % 3d%%", "[".str_pad(NULL, ($i=round(($j=($pos/$size)*100)/(100/$bar_width))), '#').str_pad(NULL, ($bar_width-$i), '-')."]", round($j));
+}
+
+function html_entity_decode_rec($text)
+{
+	while(($text_dec = html_entity_decode($text)) != $text)
+	{
+		$text = $text_dec;
+	}
+	
+	return $text;
 }
 
 ?>
