@@ -29,7 +29,7 @@ ini_set('open_basedir', FALSE);
 
 require_once('lib/FastCurl/FastCurl.php');
 
-define('SCRIPT_VERSION', '3.8');
+define('SCRIPT_VERSION', '3.8.1');
 define('GOEAR_HOME', 'http://www.goear.com');
 define('COOKIE_FILE', '.fastcurl_cookies');
 define('GOEAR_SONG_METADATA', 'http://www.goear.com/playersong/\1');
@@ -339,9 +339,9 @@ function download_song($fc, $song, $download_dir, $lf=null, $count=null)
             
             $fc->referer=GOEAR_SONG_PLAYER;
 
-			$fname=str_replace('/', '', html_entity_decode_rec($xml->playlist->track['title']));
+			$fname=str_replace('/', '', html_entity_decode_rec($xml->playlist->track['title'])).".mp3";
 										
-			echo "OK\n\nDownloading [{$fname}.mp3]...\n";
+			echo "OK\n\nDownloading [{$fname}]...\n";
 							
 			if(!is_null($count))
 			{
