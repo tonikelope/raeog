@@ -1,0 +1,3 @@
+[submodule "lib/FastCurl"]
+	path = lib/FastCurl
+	url = https://github.com/tonikelope/FastCurl.git
