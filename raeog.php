@@ -29,7 +29,7 @@ ini_set('open_basedir', FALSE);
 
 require_once('lib/FastCurl/FastCurl.php');
 
-define('SCRIPT_VERSION', '3.8.1');
+define('SCRIPT_VERSION', '3.8.2');
 define('GOEAR_HOME', 'http://www.goear.com');
 define('COOKIE_FILE', '.fastcurl_cookies');
 define('GOEAR_SONG_METADATA', 'http://www.goear.com/playersong/\1');
@@ -339,7 +339,7 @@ function download_song($fc, $song, $download_dir, $lf=null, $count=null)
             
             $fc->referer=GOEAR_SONG_PLAYER;
 
-			$fname=str_replace('/', '', html_entity_decode_rec($xml->playlist->track['title'])).".mp3";
+			$fname=preg_replace('/[\x00-\x1F\x80-\x9F]/u', '', str_replace('/', '', html_entity_decode_rec($xml->playlist->track['title']))).".mp3";
 										
 			echo "OK\n\nDownloading [{$fname}]...\n";
 							
@@ -354,9 +354,27 @@ function download_song($fc, $song, $download_dir, $lf=null, $count=null)
                     $fc->buffersize=CURL_BUFFER_SIZE;
                     $down_progress=-1;
 
-                    if(file_put_contents($fpath, $fc->exec())===FALSE)
-                            die("WRITE ERROR!: $fpath\n");
-                    else
+                    if(file_put_contents($fpath, $fc->exec())===FALSE) {
+
+                    	echo ("WRITE ERROR!: $fpath (Trying alternative file_name...)\n");
+
+                    	$fname = md5(preg_replace('/[\x00-\x1F\x80-\x9F]/u', '', str_replace('/', '', html_entity_decode_rec($xml->playlist->track['title'])))).'.mp3';
+
+                    	if(!is_null($count))
+						{
+							$fname = "{$count}_{$fname}";
+						}
+                    	
+                    	$fpath=rtrim($download_dir, '/').'/'.ltrim($fname, '/');
+						
+						if(file_put_contents($fpath, $fc->exec())===FALSE)
+						{
+							echo " FAILED!\n";
+
+						} else 
+							echo " OK\n";
+
+                    } else
                             echo " OK\n";
             }
             else
