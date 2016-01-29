@@ -29,7 +29,7 @@ ini_set('open_basedir', FALSE);
 
 require_once('lib/FastCurl/FastCurl.php');
 
-define('SCRIPT_VERSION', '3.8.2');
+define('SCRIPT_VERSION', '3.8.3');
 define('GOEAR_HOME', 'http://www.goear.com');
 define('COOKIE_FILE', '.fastcurl_cookies');
 define('GOEAR_SONG_METADATA', 'http://www.goear.com/playersong/\1');
@@ -447,13 +447,7 @@ function download_playlist($fc, $id, $name, $lf=NULL)
 
 function console_progress_bar($pos=0, $size=100, $bar_width=50)
 {
-	if($pos>0)
-	{
-		printf("%c[57D", 0x1B);
-		printf("%c[K", 0x1B);
-	}
-	
-	printf("%s % 3d%%", "[".str_pad(NULL, ($i=round(($j=($pos/$size)*100)/(100/$bar_width))), '#').str_pad(NULL, ($bar_width-$i), '-')."]", round($j));
+	printf("\33[2K\r%s % 3d%%", "[".str_pad(NULL, ($i=round(($j=($pos/$size)*100)/(100/$bar_width))), '#').str_pad(NULL, ($bar_width-$i), '-')."]", round($j));
 }
 
 function html_entity_decode_rec($text)
